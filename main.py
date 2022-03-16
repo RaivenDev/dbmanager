@@ -5,7 +5,7 @@ tabling = []
 c = ''
 cursor = ''
 banco = ''
-
+additem = []
 
 
 def ask():
@@ -31,13 +31,21 @@ def ask():
                 a = int(input('Quantas camadas?'))
                 command = str(tabler(a))
                 x='CREATE TABLE '+nome
-                
                 final=x+command
                 print(final)
                 cursor.execute(final)
                 ask()
             if edit == 'items':
                 print('--- Abrindo Editor de Items ---') 
+                nome = str(input('Qual é o nome da table requerida?'))
+                a = int(input('Quantos items?'))
+                command = item_editor(a)
+                x = "INSERT INTO "+nome+" VALUES"
+                final = x+str(command)
+                print(str(final))
+                cursor.execute(str(final))
+                banco.commit()
+                ask()
                 
 
             else:
@@ -65,7 +73,22 @@ def tabler(num):
     c = ''
     return finaltable
 
-
+def item_editor(num):
+    global c
+    global additem
+    while num != 0:
+        a = input('Qual será esse item?')
+        b = str(input('Qual será o tipo desse item?'))
+        if b == 'text':
+            a = str(a)
+            additem.append(str(a))
+        elif b == 'integer':
+            a = int(a)   
+            additem.append(int(a)) 
+        num -= 1     
+    finaltable = tuple(additem)
+    additem = []
+    return finaltable
 
 
 
